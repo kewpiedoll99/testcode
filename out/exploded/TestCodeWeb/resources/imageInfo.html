@@ -1,0 +1,40 @@
+<html>
+<head>
+    <title>Test Page</title>
+
+    <!-- include these files -->
+    <script type="text/javascript" src="js/binaryajax/binaryajax.js"></script>
+    <script type="text/javascript" src="js/imageinfo.js" ></script>
+    <!-- optionally include exif.js for Exif support -->
+    <script type="text/javascript" src="js/exif/exif.js" ></script>
+</head>
+<body>
+<h1>Test Page</h1>
+<p>This is some test text.</p>
+
+<script type="text/javascript">
+// URL of the image (must be on the same domain!)
+var file = "images/red_dress_dog.jpg";
+
+// define your own callback function
+function mycallback() {
+    var info = ImageInfo.getAllFields(file);
+
+   // either call the ImageInfo.getAllFields([file]) function which returns an object holding all the info
+//   alert("All info about this file: " + info.toSource());
+
+   // or call ImageInfo.getField([file], [field]) to get a specific field
+//   alert("Format: " + ImageInfo.getField(file, "format") + ", dimensions : " + ImageInfo.getField(file, "width") + "x" + ImageInfo.getField(file, "height"));
+
+   // or call ImageInfo.getField([file], [field]) to get a specific field
+   alert("Format: " + info["format"] + ", dimensions : " + info["width"] + "x" + info["height"]);
+}
+
+// finally, load the data
+ImageInfo.loadInfo(file, mycallback);
+</script>
+
+<img src="images/red_dress_dog.jpg" alt="RDD">
+
+</body>
+</html>

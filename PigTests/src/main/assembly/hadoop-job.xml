@@ -1,0 +1,30 @@
+<assembly>
+    <id>job</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>junit:junit</include>
+                <include>org.apache.pig:pig</include>
+                <include>org.apache.hadoop:hadoop-common</include>
+                <include>org.apache.hbase:hbase</include>
+                <include>org.apache.hadoop:hadoop-core</include>
+                <include>com.beust:jcommander</include>
+            </includes>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+        </dependencySet>
+        <dependencySet>
+            <unpack>true</unpack>
+            <includes>
+                <include>com.pronto:PigTests</include>
+            </includes>
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+        </dependencySet>
+    </dependencySets>
+</assembly>
