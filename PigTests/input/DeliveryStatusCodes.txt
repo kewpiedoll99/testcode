@@ -1,4 +1,0 @@
-001, Delivered
-002, Pending
-003, Failed
-004, Resend
