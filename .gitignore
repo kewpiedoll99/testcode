@@ -3,3 +3,6 @@ PigTests/target/
 intent.zip
 main.jar
 .svn/
+TestCode.*
+hello-world/hello-world.iml
+
