@@ -7,3 +7,5 @@ TestCode.*
 hello-world/hello-world.iml
 hello-world/src/main/Main.iml
 *.class
+WarbyParker/io/output.txt
+

@@ -9,12 +9,13 @@ import java.util.Scanner;
  */
 public class PathMatcher {
 
+    private static List<String[]> patterns = new LinkedList<String[]>();
+    private static List<String []> paths = new LinkedList<String[]>();
+    private static List<PathPatternMatch> pathPatternMatches = new LinkedList<PathPatternMatch>();
+
     public static void main(String [] args) {
         int patternCount = 0, pathCount = 0;
         String input;
-        List<String []> patterns = new LinkedList<String[]>();
-        List<String []> paths = new LinkedList<String[]>();
-        List<PathPatternMatch> pathPatternMatches = new LinkedList<PathPatternMatch>();
         Scanner sc;
 
         if (args.length > 0) {
@@ -23,35 +24,20 @@ public class PathMatcher {
             sc = new Scanner(System.in);
         }
 
-        while (sc.hasNext() && !"".equals(input = sc.nextLine())) {
-            if (patternCount == 0) {
-                // must be an int of patterns count, or an error.
-                try {
-                    patternCount = Integer.parseInt(input);
-                } catch (NumberFormatException nfe) {
-                    System.err.println("Error: First line must contain a number.");
-                    return;
-                }
-            } else if (pathCount == 0) {
-                // could be either patterns to parse, or the paths count
-                try {
-                    pathCount = Integer.parseInt(input);
-                } catch (NumberFormatException nfe) {
-                    // patterns to parse
-                    // trim separators from start & end
-                    input = trimEnd(trimFront(input, ","), ",");
-                    String [] splitPatternInput = input.split("\\,");
-                    patterns.add(splitPatternInput);
-                }
+        if (processInput(patternCount, pathCount, sc)) return;
+
+        analyzePathPatternMatches();
+
+        for (PathPatternMatch ppm : pathPatternMatches) {
+            if (ppm.getScore() == -1) {
+                System.out.println("NO MATCH");
             } else {
-                // paths to parse
-                // trim separators from start & end
-                input = trimEnd(trimFront(input, "/"), "/");
-                String [] splitPathInput = input.split("\\/");
-                paths.add(splitPathInput);
+                System.out.println(join(ppm.getPattern(), ","));
             }
         }
+    }
 
+    private static void analyzePathPatternMatches() {
         for (String [] pathIter : paths) {
             PathPatternMatch pathPatternMatch = new PathPatternMatch(pathIter);
 
@@ -82,15 +68,39 @@ public class PathMatcher {
             }
             pathPatternMatches.add(pathPatternMatch);
         }
+    }
 
-        for (PathPatternMatch ppm : pathPatternMatches) {
-            if (ppm.getScore() == -1) {
-                System.out.println("NO MATCH");
+    private static boolean processInput(int patternCount, int pathCount, Scanner sc) {
+        String input;
+        while (sc.hasNext() && !"".equals(input = sc.nextLine())) {
+            if (patternCount == 0) {
+                // must be an int of patterns count, or an error.
+                try {
+                    patternCount = Integer.parseInt(input);
+                } catch (NumberFormatException nfe) {
+                    System.err.println("Error: First line must contain a number.");
+                    return true;
+                }
+            } else if (pathCount == 0) {
+                // could be either patterns to parse, or the paths count
+                try {
+                    pathCount = Integer.parseInt(input);
+                } catch (NumberFormatException nfe) {
+                    // patterns to parse
+                    // trim separators from start & end
+                    input = trimEnd(trimFront(input, ","), ",");
+                    String [] splitPatternInput = input.split("\\,");
+                    patterns.add(splitPatternInput);
+                }
             } else {
-//                System.out.println(join(ppm.getPattern(), ",") + "; score: " + ppm.getScore());
-                System.out.println(join(ppm.getPattern(), ","));
+                // paths to parse
+                // trim separators from start & end
+                input = trimEnd(trimFront(input, "/"), "/");
+                String [] splitPathInput = input.split("\\/");
+                paths.add(splitPathInput);
             }
         }
+        return false;
     }
 
     private static String join(String [] arrayToJoin, String joiner) {
