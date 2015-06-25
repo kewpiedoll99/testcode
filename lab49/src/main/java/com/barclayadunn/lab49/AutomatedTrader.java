@@ -1,7 +1,9 @@
 package com.barclayadunn.lab49;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: barclayadunn
@@ -47,7 +49,7 @@ public class AutomatedTrader implements TradingAlgorithm {
         if (productPriceListMapCopy.containsKey(productName)) {
             productPriceList = productPriceListMapCopy.get(productName);
         } else {
-            productPriceList = new ArrayList<BigDecimal>();
+            productPriceList = new ArrayList<>();
         }
         productPriceList.add(pricePrice);
         productPricesStore.putProductPriceListInMap(productName, productPriceList);

@@ -1,10 +1,9 @@
 *.DS_Store
 PigTests/target/
-intent.zip
-main.jar
+*.zip
+*.jar
+*.iml
 .svn/
 TestCode.*
-hello-world/hello-world.iml
-hello-world/src/main/Main.iml
 *.class
 WarbyParker/io/output.txt
