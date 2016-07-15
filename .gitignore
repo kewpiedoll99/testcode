@@ -1,9 +1,11 @@
 *.DS_Store
-PigTests/target/
+*/target/
 *.zip
 *.jar
 *.iml
+*.class
 .svn/
 TestCode.*
-*.class
-WarbyParker/io/output.txt
+output.txt
+lib/*
+out/*
