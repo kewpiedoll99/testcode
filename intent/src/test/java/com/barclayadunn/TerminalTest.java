@@ -4,6 +4,7 @@ import com.barclayadunn.exception.NullProductException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,10 +64,11 @@ public class TerminalTest extends TestData {
     }
 
     private void whenSettingPricingForProducts() {
-        terminal.setPricing("A", 2.00, 4, 7.00);
-        terminal.setPricing("B", 12.00, 0, 0.00);
-        terminal.setPricing("C", 1.25, 6, 6.00);
-        terminal.setPricing("D", 0.15, 0, 0.00);
+        terminal.setPricing("A", new BigDecimal("2.00"), new BigDecimal("7.00"), 4, LotDiscount.class);
+        terminal.setPricing("B", new BigDecimal("12.00"), new BigDecimal("0.00"), 0, NoDiscount.class);
+        terminal.setPricing("C", new BigDecimal("1.25"), new BigDecimal("6.00"), 6, LotDiscount.class);
+        terminal.setPricing("D", new BigDecimal("0.15"), new BigDecimal("0.00"), 0, NoDiscount.class);
+        terminal.setPricing("G", new BigDecimal("1.00"), new BigDecimal("0.90"), 10, ThresholdDiscount.class);
     }
 
     private void whenAddingProducts() {
@@ -83,16 +85,16 @@ public class TerminalTest extends TestData {
     private void thenProductsHaveCorrectData() {
         productA = terminal.getProductByProductCode("A");
         assertNotNull(productA);
-        assertEquals((Double) productA.getSinglePrice(), (Double) singlePriceA);
+        assertEquals(0, singlePriceA.compareTo(productA.getSinglePrice()));
         productB = terminal.getProductByProductCode("B");
         assertNotNull(productB);
-        assertEquals((Double) productB.getSinglePrice(), (Double) singlePriceB);
+        assertEquals(0, singlePriceB.compareTo(productB.getSinglePrice()));
         productC = terminal.getProductByProductCode("C");
         assertNotNull(productC);
-        assertEquals((Double) productC.getSinglePrice(), (Double) singlePriceC);
+        assertEquals(0, singlePriceC.compareTo(productC.getSinglePrice()));
         productD = terminal.getProductByProductCode("D");
         assertNotNull(productD);
-        assertEquals((Double) productD.getSinglePrice(), (Double) singlePriceD);
+        assertEquals(0, singlePriceD.compareTo(productD.getSinglePrice()));
     }
 
     private void thenTerminalContainsExpectedProducts() {
@@ -109,11 +111,13 @@ public class TerminalTest extends TestData {
     }
 
     private void thenSubtotalContainsValueOfSingleA() {
-        assertEquals((Double) productA.getSinglePrice(), (Double) terminal.getRunningTotal());
+        BigDecimal runningTotal = terminal.getRunningTotal();
+        BigDecimal singlePrice = productA.getSinglePrice();
+        assertEquals(0, singlePrice.compareTo(runningTotal));
     }
 
     private void thenTotalEqualsValueOfSingleA() {
-        assertEquals((Double) productA.getSinglePrice(), (Double) terminal.total());
+        assertEquals(0, productA.getSinglePrice().compareTo(terminal.total()));
     }
 
     private void thenRunningCountEquals1() {

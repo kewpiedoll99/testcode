@@ -2,6 +2,8 @@ package com.barclayadunn;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.*;
 
 /**
@@ -28,6 +30,14 @@ public class ProductTest extends TestData {
     }
 
     @Test
+    public void testThresholdProductPrices() {
+        givenProductSet();
+        givenLotNumberOfEachProduct();
+        thenProductsExistWithCorrectProductCodes();
+        thenValidLotPricesAreDefined();
+    }
+
+    @Test
     public void testMultipleProductPrices() {
         givenProductSet();
         givenCodeTestNumberOfEachProduct();
@@ -40,10 +50,11 @@ public class ProductTest extends TestData {
         productCountB = codeTestMaxCountB;
         productCountC = codeTestMaxCountC;
         productCountD = codeTestMaxCountD;
+        productCountG = codeTestMaxCountG;
     }
 
     private void givenOneOfEachProduct() {
-        productCountA = productCountB = productCountC = productCountD = 1;
+        productCountA = productCountB = productCountC = productCountD = productCountG = 1;
     }
 
     private void givenLotNumberOfEachProduct() {
@@ -51,6 +62,7 @@ public class ProductTest extends TestData {
         productCountB = lotCountB;
         productCountC = lotCountC;
         productCountD = lotCountD;
+        productCountG = lotCountG;
     }
 
     private void thenProductsExistWithCorrectProductCodes() {
@@ -58,32 +70,40 @@ public class ProductTest extends TestData {
         assertEquals("B", productB.getProductCode());
         assertEquals("C", productC.getProductCode());
         assertEquals("D", productD.getProductCode());
+        assertEquals("G", productG.getProductCode());
     }
 
     private void thenValidSinglePricesAreDefined() {
-        assertEquals((Double) productA.getPriceForCount(productCountA), (Double) singlePriceA);
-        assertEquals((Double) productA.getSinglePrice(), (Double) singlePriceA);
-        assertEquals((Double) productB.getPriceForCount(productCountB), (Double) singlePriceB);
-        assertEquals((Double) productB.getSinglePrice(), (Double) singlePriceB);
-        assertEquals((Double) productC.getPriceForCount(productCountC), (Double) singlePriceC);
-        assertEquals((Double) productC.getSinglePrice(), (Double) singlePriceC);
-        assertEquals((Double) productD.getPriceForCount(productCountD), (Double) singlePriceD);
-        assertEquals((Double) productD.getSinglePrice(), (Double) singlePriceD);
+        assertEquals(0, singlePriceA.compareTo(productA.getPriceForCount(productCountA)));
+        assertEquals(0, singlePriceA.compareTo(productA.getSinglePrice()));
+        assertEquals(0, singlePriceB.compareTo(productB.getPriceForCount(productCountB)));
+        assertEquals(0, singlePriceB.compareTo(productB.getSinglePrice()));
+        assertEquals(0, singlePriceC.compareTo(productC.getPriceForCount(productCountC)));
+        assertEquals(0, singlePriceC.compareTo(productC.getSinglePrice()));
+        assertEquals(0, singlePriceD.compareTo(productD.getPriceForCount(productCountD)));
+        assertEquals(0, singlePriceD.compareTo(productD.getSinglePrice()));
+        assertEquals(0, singlePriceG.compareTo(productG.getPriceForCount(productCountG)));
+        assertEquals(0, singlePriceG.compareTo(productG.getSinglePrice()));
     }
 
     private void thenValidLotPricesAreDefined() {
-        assertEquals((Double) productA.getPriceForCount(productCountA), (Double) lotPriceA);
-        assertFalse(productB.hasLotPricing());
-        assertEquals((Double) productB.getPriceForCount(productCountB), (Double) (singlePriceB * productCountB));
-        assertEquals((Double) productC.getPriceForCount(productCountC), (Double) lotPriceC);
-        assertFalse(productD.hasLotPricing());
-        assertEquals((Double) productD.getPriceForCount(productCountD), (Double) (singlePriceD * productCountD));
+        assertTrue(productA.hasDiscountedPricing());
+        assertEquals(0, lotPriceA.compareTo(productA.getPriceForCount(productCountA)));
+        assertFalse(productB.hasDiscountedPricing());
+        assertEquals(0, singlePriceB.multiply(new BigDecimal(productCountB)).compareTo(productB.getPriceForCount(productCountB)));
+        assertTrue(productC.hasDiscountedPricing());
+        assertEquals(0, lotPriceC.compareTo(productC.getPriceForCount(productCountC)));
+        assertFalse(productD.hasDiscountedPricing());
+        assertEquals(0, singlePriceD.multiply(new BigDecimal(productCountD)).compareTo(productD.getPriceForCount(productCountD)));
+        assertTrue(productG.hasDiscountedPricing());
+        assertEquals(0, singlePriceG.multiply(new BigDecimal(productCountG)).compareTo(productG.getPriceForCount(productCountG)));
     }
 
     private void thenValidCodeTestPricesAreDefined() {
-        assertEquals((Double) productA.getPriceForCount(productCountA), (Double) codeTestTotalA);
-        assertEquals((Double) productB.getPriceForCount(productCountB), (Double) codeTestTotalB);
-        assertEquals((Double) productC.getPriceForCount(productCountC), (Double) codeTestTotalC);
-        assertEquals((Double) productD.getPriceForCount(productCountD), (Double) codeTestTotalD);
+        assertEquals(0, codeTestTotalA.compareTo(productA.getPriceForCount(productCountA)));
+        assertEquals(0, codeTestTotalB.compareTo(productB.getPriceForCount(productCountB)));
+        assertEquals(0, codeTestTotalC.compareTo(productC.getPriceForCount(productCountC)));
+        assertEquals(0, codeTestTotalD.compareTo(productD.getPriceForCount(productCountD)));
+        assertEquals(0, codeTestTotalG.compareTo(productG.getPriceForCount(productCountG)));
     }
 }

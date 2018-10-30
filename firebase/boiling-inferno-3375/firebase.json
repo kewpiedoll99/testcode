@@ -1,0 +1,10 @@
+{
+  "firebase": "boiling-inferno-3375",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ],
+  "rules": "rules.json"
+}

@@ -3,6 +3,8 @@ package com.barclayadunn;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -20,18 +22,21 @@ public class RunIntentTest extends TestData {
         productMap.put(productB.getProductCode(), productB);
         productMap.put(productC.getProductCode(), productC);
         productMap.put(productD.getProductCode(), productD);
+        productMap.put(productG.getProductCode(), productG);
         intentTestSets.put(1, "ABCDABAA");
         intentTestSets.put(2, "CCCCCCC");
         intentTestSets.put(3, "ABCD");
-        intentTestAnswers.put(1, 32.40);
-        intentTestAnswers.put(2, 7.25);
-        intentTestAnswers.put(3, 15.40);
+        intentTestSets.put(4, "GGGGGGGGGGGG");
+        intentTestAnswers.put(1, new BigDecimal("32.40"));
+        intentTestAnswers.put(2, new BigDecimal("7.25"));
+        intentTestAnswers.put(3, new BigDecimal("15.40"));
+        intentTestAnswers.put(4, new BigDecimal("10.80"));
     }
 
     @Test
     public void testIntentTestCodeSets() {
         givenTerminalContainsExpectedProducts();
-        for (int i = 1; i < 4; i++) {
+        for (Integer i : intentTestSets.keySet()) {
             givenScannedProductsIsEmpty();
             whenScanningIntentTestSet(i);
             thenTerminalTotalEqualsExpectedTotal(i);
@@ -46,6 +51,6 @@ public class RunIntentTest extends TestData {
     }
 
     private void thenTerminalTotalEqualsExpectedTotal(int i) {
-        assertEquals(intentTestAnswers.get(i), (Double) terminal.total());
+        assertEquals(0, intentTestAnswers.get(i).compareTo(terminal.total()));
     }
 }

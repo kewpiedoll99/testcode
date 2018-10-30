@@ -2,6 +2,7 @@ package com.barclayadunn;
 
 import com.barclayadunn.exception.NullProductException;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +16,15 @@ public class Terminal {
     private Map<String, Product> products = new HashMap<String, Product>();
     private Map<String, Integer> productsScanned = new HashMap<String, Integer>();
 
-    public void setPricing(String productCode, double singlePrice, int lotCount, double lotPrice) {
+    public void setPricing(String productCode, BigDecimal singlePrice, BigDecimal lotPrice, int lotCount, Class discountClass) {
         Product p = getProductByProductCode(productCode);
         if (p == null) {
-            p = new Product(productCode, singlePrice, lotCount, lotPrice);
+            if (LotDiscount.class.equals(discountClass))
+                p = new Product(productCode, new LotDiscount(singlePrice, lotPrice, lotCount));
+            if (NoDiscount.class.equals(discountClass))
+                p = new Product(productCode, new NoDiscount(singlePrice, lotPrice, lotCount));
+            if (ThresholdDiscount.class.equals(discountClass))
+                p = new Product(productCode, new ThresholdDiscount(singlePrice, lotPrice, lotCount));
         }
         products.put(productCode, p);
     }
@@ -33,15 +39,16 @@ public class Terminal {
         }
         scanCount++;
         productsScanned.put(productCode, scanCount);
-        System.out.println("Scanned: " + productCode);
+        System.out.println("Scanned: " + productCode + "; running count: " + scanCount);
     }
 
-    public double getRunningTotal() {
-        double runningTotal = 0;
+    public BigDecimal getRunningTotal() {
+        BigDecimal runningTotal = new BigDecimal("0.00");
         Product p;
         for (Map.Entry<String, Integer> entry : productsScanned.entrySet()) {
             p = getProductByProductCode(entry.getKey());
-            runningTotal += p.getPriceForCount(entry.getValue());
+            BigDecimal priceForCount = p.getPriceForCount(entry.getValue());
+            runningTotal = runningTotal.add(priceForCount);
         }
         return runningTotal;
     }
@@ -54,8 +61,8 @@ public class Terminal {
         return runningCount;
     }
 
-    public double total() {
-        double totalAmount = getRunningTotal();
+    public BigDecimal total() {
+        BigDecimal totalAmount = getRunningTotal();
         int countProductsScanned = getRunningCountAllProductsScanned();
         System.out.printf("Total products purchased: %d\nTotal amount due: $%,.2f\n", countProductsScanned, totalAmount);
         return totalAmount;
