@@ -1,4 +1,4 @@
-package com.barclayadunn.feeds;
+package com.barclayadunn.json;
 
 import com.google.common.base.MoreObjects;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package com.barclayadunn.feeds;
+package com.barclayadunn.json;
 
 import org.apache.commons.io.IOUtils;
 

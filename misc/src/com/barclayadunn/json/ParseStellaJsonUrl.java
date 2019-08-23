@@ -1,4 +1,4 @@
-package com.barclayadunn.feeds;
+package com.barclayadunn.json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -11,7 +11,7 @@ import java.util.List;
  * Date: Mar 2, 2011
  * Time: 12:05:43 PM
  */
-public class ParseJsonUrl extends AbstractParseJsonWithGson {
+public class ParseStellaJsonUrl extends AbstractParseJsonWithGson {
 
     public static void main(String... args) throws Exception {
 //        String json =

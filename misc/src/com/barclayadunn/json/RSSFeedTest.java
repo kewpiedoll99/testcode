@@ -1,4 +1,4 @@
-package com.barclayadunn.feeds;
+package com.barclayadunn.json;
 
 /**
  * Created by IntelliJ IDEA.
