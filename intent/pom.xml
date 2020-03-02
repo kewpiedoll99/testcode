@@ -24,7 +24,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.barclayadunn.RunIntentTest</mainClass>
+                            <mainClass>com.barclayadunn.intent.RunIntentTest</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
