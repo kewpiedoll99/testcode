@@ -1,12 +1,13 @@
-package com.barclayadunn;
-
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
+package com.barclayadunn.rtr;
 
 import com.google.common.collect.Lists;
+
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 public class GroupByTest {
     private static List<String> names = Lists.newArrayList("LLQA", "eric", "jeannice", "Camille", "kaleigh", "rtannenbaum", "vaibhav", "MootyWaffles", "timmy", "luke");
@@ -84,5 +85,25 @@ class CompositeThing {
                 .add("name", name)
                 .add("description", description)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CompositeThing that = (CompositeThing) o;
+
+        if (id != that.id) return false;
+        if (!name.equals(that.name)) return false;
+        return description.equals(that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + description.hashCode();
+        return result;
     }
 }

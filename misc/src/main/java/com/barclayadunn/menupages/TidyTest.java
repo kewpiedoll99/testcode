@@ -1,11 +1,5 @@
 package com.barclayadunn.menupages;
 
-import org.w3c.dom.Document;
-import org.w3c.tidy.Tidy;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URL;
 
 /**
  * User: barclaydunn
@@ -13,7 +7,7 @@ import java.net.URL;
  * Time: 10:33:53 AM
  */
 public class TidyTest {
-
+/*
     public static void main(String... args) throws Exception {
 
         String output = tidyStringOfUrl("http://www.menupages.com/restaurants/text/two%20boots/all-areas/all-neighborhoods/all-cuisines/");
@@ -38,4 +32,5 @@ public class TidyTest {
 //        IOUtils.copy(url.openStream(), output);
         return output.toString();
     }
+    */
 }
