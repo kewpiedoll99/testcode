@@ -1,0 +1,25 @@
+How to decrypt ASCII85 encoding
+The decryption start by splitting the text into groups of 5 characters (if the tuple is not 5-character long, it is filled with u)
+
+Example: The message 6pja<70 is split into 6pja< and 70 (that is treated as 70uuu)
+
+For each group of 5 characters, get the ASCII code and subtract 33.
+
+Example: 6pja< = 54,112,106,97,60 (ASCII codes), -33 => 21,79,73,64,27
+
+Example: 70uuu = 55,48,117,117,117 (ASCII codes), -33 => 22,15,84,84,84
+
+Every tuple of 5 numbers is then considered as a unique number written in base 85, and converted to base 2.
+
+Example: [21,79,73,64,27] (base85)
+= 21*85^4 + 79*85^3 + 73*85^2 + 64*85 + 27       (base10)
+= 21*52200625 + 79*614125 + 73*7225 + 64*85 + 27
+= 1096213125 + 48515875 + 527425 + 5440 + 27
+= 1145261892 (base10)
+= 01000100010000110100111101000100 (base2)
+
+Example: [22,15,84,84,84] (base85) = 01000101000010010101011000000101 (base2)
+
+The plain text is then this binary code encoded with initial encoding (ASCII, Unicode, etc.), n last characters are ignored when n characters have been added in initial completion step.
+
+Example: 01000100 01000011 01001111 01000100 01000101 (00001001 01010110 00000101) = DCODE (ASCII 8bit encoding).
